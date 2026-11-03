@@ -1,0 +1,43 @@
+name: Runtime guard
+description: >-
+  Fails when a repository drifts from the tivtav runtime standard: Lambdas, layers,
+  EC2 and Fargate not on arm64, or Python / Node versions (in synthesized CDK
+  templates and in the toolchain files) below the minimum in runtime-standards.json.
+inputs:
+  cdk-out:
+    description: >-
+      cdk.out directories to check, one per line. Default: every cdk.out in the
+      checkout. Run `cdk synth` before this step.
+    required: false
+    default: ""
+  exempt:
+    description: >-
+      Regexes, one per line, matched against a Lambda's logical id or aws:cdk:path,
+      for functions a third-party construct owns. Say why in a comment next to it.
+    required: false
+    default: ""
+  toolchain:
+    description: Also check .python-version, .nvmrc, pyproject.toml, package.json, workflows and Dockerfiles.
+    required: false
+    default: "true"
+  fail-on-warning:
+    description: Fail on warnings too (a version below `latest` but at or above `minimum`).
+    required: false
+    default: "false"
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        CDK_OUT: ${{ inputs.cdk-out }}
+        EXEMPT: ${{ inputs.exempt }}
+        TOOLCHAIN: ${{ inputs.toolchain }}
+        FAIL_ON_WARNING: ${{ inputs.fail-on-warning }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: |
+        args=(--standards "$ACTION_PATH/../../runtime-standards.json" --root .)
+        while IFS= read -r line; do [ -n "$line" ] && args+=(--cdk-out "$line"); done <<< "$CDK_OUT"
+        while IFS= read -r line; do [ -n "$line" ] && args+=(--exempt "$line"); done <<< "$EXEMPT"
+        [ "$TOOLCHAIN" = "true" ] || args+=(--no-toolchain)
+        [ "$FAIL_ON_WARNING" = "true" ] && args+=(--fail-on-warning)
+        python3 -I "$ACTION_PATH/check.py" "${args[@]}"

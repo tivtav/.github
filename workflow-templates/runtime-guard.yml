@@ -1,0 +1,21 @@
+name: Runtime guard
+
+# Checks this repository against the tivtav runtime standard (newest GA Python and
+# Node on AWS Lambda, arm64). In a CDK repository, synth first so the templates are
+# checked too; or add the `uses:` step after the synth in your existing CI job.
+
+on:
+  pull_request:
+  push:
+    branches: [$default-branch]
+
+permissions:
+  contents: read
+
+jobs:
+  runtime-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # - run: npx cdk synth > /dev/null   # CDK repositories: synth first
+      - uses: tivtav/.github/actions/runtime-guard@main

@@ -1,0 +1,6 @@
+{
+  "name": "Runtime guard",
+  "description": "Fail CI when Lambdas, EC2 or Fargate aren't on arm64, or Python/Node versions fall behind the tivtav runtime standard.",
+  "iconName": "octicon shield-check",
+  "categories": ["Python", "TypeScript", "JavaScript"]
+}

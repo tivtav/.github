@@ -26,3 +26,4 @@ Closes #
 - [ ] I've added or updated tests where needed
 - [ ] I've updated documentation where needed
 - [ ] No sensitive data (credentials, patient data) is included
+- [ ] New or changed Lambdas, containers and CI use the [runtime standard](https://github.com/tivtav/.github/blob/main/runtime-standards.json) (newest GA Python/Node, arm64)

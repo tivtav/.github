@@ -12,6 +12,9 @@ Any repository without its own version of these files automatically falls back t
 | [`SECURITY.md`](SECURITY.md) | How to privately report security vulnerabilities |
 | [`ISSUE_TEMPLATE/`](ISSUE_TEMPLATE) | Bug report and feature request forms, plus support links |
 | [`pull_request_template.md`](pull_request_template.md) | Default pull request description and checklist |
+| [`runtime-standards.json`](runtime-standards.json) | The org's Python and Node.js versions and CPU architecture (arm64); the one place to bump them |
+| [`actions/runtime-guard/`](actions/runtime-guard) | CI step that fails when a repository drifts from `runtime-standards.json` |
+| [`workflow-templates/`](workflow-templates) | Starter workflows offered under **Actions → New workflow** in every repository |
 
 ## ✏️ Making changes
 

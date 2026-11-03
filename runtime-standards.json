@@ -1,0 +1,28 @@
+{
+  "$comment": "The one place the org's runtime versions live (decision 0018 in tivtav-documentation). Bump 'latest' when AWS Lambda makes a new runtime generally available: repositories behind it get a warning. Raise 'minimum' once they have moved: repositories behind it then fail CI.",
+  "updated": "2026-11-03",
+  "source": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html",
+  "architecture": "arm64",
+  "python": { "latest": "3.14", "minimum": "3.14" },
+  "node": { "latest": "24", "minimum": "24" },
+  "upcoming": {
+    "python": "3.15",
+    "node": "26",
+    "note": "Lambda public preview since 2026-08, GA targeted for 2026-11. Preview runtimes have no SLA: not for production until GA, then bump 'latest' here."
+  },
+  "exempt": {
+    "$comment": "Lambdas that aws-cdk-lib creates for itself. Their runtime and architecture are set by CDK, not by us; they run only at deploy time. Matched against the CloudFormation logical id (regex) or the aws:cdk:path metadata (regex).",
+    "logical_id": [
+      "^LogRetention[0-9a-f]{32}",
+      "^AWS679f53fac002430cb0da5b7982bd2287",
+      "^BucketNotificationsHandler[0-9a-f]{32}",
+      "^CustomCDKBucketDeployment[0-9A-Fa-f]{32}",
+      "^Custom[A-Za-z0-9]*CustomResourceProvider",
+      "^AWSCDKCfnUtilsProviderCustomResourceProvider"
+    ],
+    "path": [
+      "/framework-(onEvent|onTimeout|isComplete)/",
+      "/waiter-state-machine/"
+    ]
+  }
+}
